@@ -136,7 +136,11 @@ button{cursor:pointer;border:0;background:none}
 #anuncio a{color:var(--neon);font-weight:700;text-decoration:underline}
 #anuncio button{color:var(--suave);font-size:1.1rem;flex-shrink:0}
 /* ===== Cuentas y DEV ===== */
-.dev{display:inline-block;background:var(--neon);color:#021005;font-size:.6rem;font-weight:800;padding:1px 5px;border-radius:5px;margin-right:6px;vertical-align:middle;letter-spacing:.5px}
+.dev,.rango-manager,.rango-pro{display:inline-block;font-size:.6rem;font-weight:800;padding:1px 5px;border-radius:5px;margin-right:6px;vertical-align:middle;letter-spacing:.5px}
+.dev{background:var(--neon);color:#021005}
+.rango-manager{background:#ffd93d;color:#021005}
+.rango-pro{background:var(--err);color:#fff}
+.selRango{background:var(--panel2);color:var(--txt);border:1px solid var(--linea);border-radius:7px;font-size:.72rem;padding:2px 4px}
 .enlace{display:block;margin:12px auto 0;color:var(--suave);font-size:.85rem;text-decoration:underline}
 .aviso-dev{display:block;margin-top:14px;color:var(--suave);font-size:.72rem;line-height:1.3}
 .dfila{display:flex;align-items:center;gap:6px;padding:6px 0;font-size:.82rem;flex-wrap:wrap;border-bottom:1px solid var(--linea)}
@@ -268,19 +272,19 @@ button{cursor:pointer;border:0;background:none}
 <p>Eres responsable de tu usuario y de tu contraseña. La cuenta se crea y se guarda en tu propio dispositivo, y la contraseña solo se comprueba en él; no se envía a nadie. Si olvidas la contraseña o borras los datos del navegador, la cuenta no se puede recuperar. No compartas tu cuenta ni te hagas pasar por otra persona.</p>
 <h4>3. Cómo viajan y se guardan los mensajes</h4>
 <p>Los mensajes viajan cifrados de navegador a navegador mediante WebRTC y pasan por un servicio público de conexión (PeerJS) únicamente para que os encontréis. Este servicio es de terceros y puede fallar o dejar de estar disponible. En los grupos, quien escribe envía una copia del mensaje a cada miembro. Esto no es un sistema de seguridad profesional: no envíes contraseñas, datos bancarios ni información que no quieras que otras personas puedan llegar a ver.</p>
-<h4>
-<h4>6. Conducta</h4>
+<h4>; la copia del DEV se actualiza la próxima vez que te conectes.</p>
+<h4>4. Conducta</h4>
 <p>Está prohibido acosar, amenazar, insultar de forma grave, difundir contenido ilegal, violento o sexual no consentido, compartir datos personales de otras personas sin su permiso, enviar spam o intentar saltarse las medidas de la aplicación.</p>
-<h4>7. Sanciones</h4>
-<p>El DEV puede banear una cuenta de forma temporal o permanente, indicando un motivo y una duración que verá la persona afectada. Mientras dure el baneo no se pueden enviar mensajes ni recibirlos en chats individuales. El DEV también puede eliminar una cuenta. El DEV no puede ser baneado ni bloqueado. La aplicación limita además el número de mensajes seguidos y puede bloquear temporalmente el envío si se supera.</p>
-<h4>8. Fotos de perfil y apodos</h4>
+<h4>5. Sanciones</h4>
+<p>El DEV puede banear una cuenta de forma temporal o permanente, indicando un motivo y una duración que verá la persona afectada. Mientras dure el baneo no se pueden enviar mensajes ni recibirlos en chats individuales. El DEV también puede eliminar una cuenta. El DEV no puede ser baneado ni bloqueado. El DEV puede además asignar a cualquier cuenta el rango MANAGER o PRO, que se muestran junto a su nombre; estos rangos son solo distintivos y no dan permisos adicionales. La aplicación limita además el número de mensajes seguidos y puede bloquear temporalmente el envío si se supera.</p>
+<h4>6. Fotos de perfil y apodos</h4>
 <p>La foto de perfil que elijas se reduce y se envía a tus contactos cuando estáis conectados. No subas imágenes que no te pertenezcan o que sean ofensivas. Los apodos que pones a otras personas solo los ves tú. Si bloqueas a alguien, esa persona dejará de ver tu foto de perfil.</p>
-<h4>9. Disponibilidad y responsabilidad</h4>
+<h4>7. Disponibilidad y responsabilidad</h4>
 <p>La aplicación se ofrece tal cual, sin garantías de funcionamiento continuo ni de conservación de mensajes o cuentas. El DEV no se hace responsable de pérdidas de datos, fallos de conexión ni de lo que otros usuarios escriban.</p>
-<h4>10. Cambios en estos términos</h4>
+<h4>8. Cambios en estos términos</h4>
 <p>Estos términos pueden cambiar. Si cambian de forma importante, se te pedirá aceptarlos de nuevo antes de seguir usando el chat.</p>
-<h4>11. Aceptación y retirada</h4>
-<p>Al marcar la casilla confirmas que has leído y aceptas estas condiciones. Si más adelante quieres retirar tu aceptación, deja de usar la aplicación y pide al DEV que elimine tu cuenta.</p>
+<h4>9. Aceptación y retirada</h4>
+<p>Al marcar la casilla confirmas que has leído y aceptas estas condiciones. Si no las aceptas, no podrás usar el chat. Si más adelante quieres retirar tu aceptación, deja de usar la aplicación y pide al DEV que elimine tu cuenta.</p>
   </div></details>
   <label><input type="checkbox" id="tycOk"><span>He leído y acepto los términos y condiciones, incluido que el DEV pueda ver quién está en línea, los grupos y sus miembros, y revisar mis chats cuando no esté en línea.</span></label>
   <div class="dos"><button class="boton" id="tycBtn" disabled>Aceptar y continuar</button><button class="boton sec2" id="tycNo">No acepto</button></div>
@@ -377,7 +381,13 @@ $('btnPers').onclick = () => $('pers').classList.remove('oculto');
 $('persCerrar').onclick = () => $('pers').classList.add('oculto');
 function mostrarAnuncio(){ $('anuncio').classList.remove('oculto'); clearTimeout(mostrarAnuncio.t); mostrarAnuncio.t = setTimeout(() => $('anuncio').classList.add('oculto'), 12000); }
 $('anuncioX').onclick = () => { $('anuncio').classList.add('oculto'); clearTimeout(mostrarAnuncio.t); };
-function ponNombre(el, n, usu){ el.textContent = usu ? vis(n) : n; if(usu && n === DEV) el.insertAdjacentHTML('afterbegin', '<span class="dev">DEV</span>'); }
+function ponNombre(el, n, usu){
+  el.textContent = usu ? vis(n) : n;
+  if(!usu) return;
+  if(n === DEV) el.insertAdjacentHTML('afterbegin', '<span class="dev">DEV</span>');
+  else if(rangos[n] && rangos[n].rango === 'manager') el.insertAdjacentHTML('afterbegin', '<span class="rango-manager">MANAGER</span>');
+  else if(rangos[n] && rangos[n].rango === 'pro') el.insertAdjacentHTML('afterbegin', '<span class="rango-pro">PRO</span>');
+}
 function cargar(){ try{ chats = JSON.parse(ALM.getItem('cp_'+yo)) || {}; }catch(e){ chats = {}; } }
 
 /* ---------- 1. Inicio de sesión ---------- */
@@ -386,6 +396,7 @@ let esDev = false, devVer = false, modoReg = false, cuentas = {}, sanc = {};
 const miNonce = Math.random().toString(36).slice(2) + Date.now();
 try{ cuentas = JSON.parse(ALM.getItem('cp_cuentas')) || {}; }catch(e){}
 try{ sanc = JSON.parse(ALM.getItem('cp_sanc')) || {}; }catch(e){}
+try{ rangos = JSON.parse(ALM.getItem('cp_rangos')) || {}; }catch(e){}
 const guardarCuentas = () => ALM.setItem('cp_cuentas', JSON.stringify(cuentas));
 async function hash(p, sal){
   if(crypto.subtle){
@@ -738,10 +749,20 @@ function cerrarChat(){
 /* ---------- Cuentas, sanciones y DEV ---------- */
 function salir(msg){ ALM.removeItem('cp_sesion'); ALM.setItem('cp_msg', msg); if(peer) peer.destroy(); location.reload(); }
 const sancTxt = x => [x.cmd, x.u, x.ts, x.hasta || 0, x.motivo || ''].join('|');
+const rangoTxt = x => [x.rango || '', x.u, x.ts].join('|');
+function guardarRangos(){ try{ ALM.setItem('cp_rangos', JSON.stringify(rangos)); }catch(e){} }
+async function aplicarRango(x){
+  if(!x || typeof x.u !== 'string' || x.u === DEV || !ALM.getItem('cp_devpub')) return;
+  if(!(await verificar(JSON.parse(ALM.getItem('cp_devpub')), rangoTxt(x), x.sig))) return;
+  if(rangos[x.u] && rangos[x.u].ts >= x.ts) return;
+  if(x.rango) rangos[x.u] = x; else delete rangos[x.u];
+  guardarRangos(); pintarLista(); if(actual) pintarMensajes();
+  if(x.u === yo) ponNombre($('miNombre'), yo, true);
+}
 const b64 = b => btoa(String.fromCharCode(...new Uint8Array(b)));
 const deb64 = t => Uint8Array.from(atob(t), c => c.charCodeAt(0));
 const ALG = {name:'ECDSA', namedCurve:'P-256'}, FIR = {name:'ECDSA', hash:'SHA-256'};
-let devPriv = null, devPub = null, reg = {us:{}, gr:{}, sanc:{}}, copias = {}, copiasLlenas = false;
+let devPriv = null, devPub = null, reg = {us:{}, gr:{}, sanc:{}, rangos:{}}, copias = {}, copiasLlenas = false;
 async function claveDev(){                       // clave de firma del DEV (se guarda solo en su navegador)
   const g = ALM.getItem('cp_devkey');
   if(g){ const j = JSON.parse(g); devPriv = await crypto.subtle.importKey('jwk', j.priv, ALG, false, ['sign']); devPub = j.pub; return; }
@@ -756,7 +777,7 @@ async function verificar(pub, t, sig){
        return await crypto.subtle.verify(FIR, k, deb64(sig), new TextEncoder().encode(t)); }catch(e){ return false; }
 }
 function cargarReg(){ try{ copias = JSON.parse(ALM.getItem('cp_devcopias')) || {}; }catch(e){}
-  try{ reg = Object.assign({us:{}, gr:{}, sanc:{}}, JSON.parse(ALM.getItem('cp_devreg'))); }catch(e){} }
+  try{ reg = Object.assign({us:{}, gr:{}, sanc:{}, rangos:{}}, JSON.parse(ALM.getItem('cp_devreg'))); }catch(e){} }
 function guardarCopias(){ try{ ALM.setItem('cp_devcopias', JSON.stringify(copias)); }catch(e){ if(!copiasLlenas){ copiasLlenas = true; aviso('Almacenamiento lleno: no se pueden guardar más copias de chats.'); } } }
 function guardarReg(){ try{ ALM.setItem('cp_devreg', JSON.stringify(reg)); }catch(e){} }
 
@@ -800,7 +821,7 @@ async function manejarDev(n, d){
     else if(f.x !== d.pub.x || f.y !== d.pub.y){ aviso('⚠️ La identidad del DEV no coincide: se ignoran sus órdenes.'); return; }
     devVer = true;
   }
-  if(ALM.getItem('cp_devpub')) for(const s of d.sanc || []) await aplicarSancion(s);
+  if(ALM.getItem('cp_devpub')){ for(const s of d.sanc || []) await aplicarSancion(s); for(const x of d.rangos || []) await aplicarRango(x); }
 }
 async function aplicarSancion(s){
   if(!s || typeof s.u !== 'string' || s.u === DEV || !(await verificar(JSON.parse(ALM.getItem('cp_devpub')), sancTxt(s), s.sig))) return;
@@ -827,7 +848,7 @@ async function devHola(n, d){
     m.forEach(u => { if(u !== DEV && !reg.us[u]) reg.us[u] = {}; });
   });
   guardarReg(); pintarDev();
-  if(d.nonce && abierta(n) && devPriv) conexiones[n].send({dev:'estado', pub:devPub, firma:await firmar(String(d.nonce)), sanc:Object.values(reg.sanc)});
+  if(d.nonce && abierta(n) && devPriv) conexiones[n].send({dev:'estado', pub:devPub, firma:await firmar(String(d.nonce)), sanc:Object.values(reg.sanc), rangos:Object.values(reg.rangos)});
 }
 async function sancionar(u, cmd){
   if(u === DEV || !devPriv) return;
@@ -842,6 +863,14 @@ async function sancionar(u, cmd){
   reg.sanc[u] = x; guardarReg(); if(cmd === 'del'){ delete copias[u]; guardarCopias(); delete reg.us[u]; guardarReg(); }
   Object.keys(conexiones).forEach(n => { if(abierta(n)) conexiones[n].send({dev:'estado', sanc:[x]}); });   // los desconectados la reciben al volver
   aviso(cmd === 'ban' ? u + ' baneado.' : cmd === 'unban' ? u + ' desbaneado.' : 'Cuenta de ' + u + ' eliminada.');
+  pintarDev();
+}
+async function ponerRango(u, rango){
+  if(u === DEV || !devPriv) return;
+  const x = {rango:rango || null, u, ts:Date.now()}; x.sig = await firmar(rangoTxt(x));
+  if(rango) reg.rangos[u] = x; else delete reg.rangos[u];
+  guardarReg();
+  Object.keys(conexiones).forEach(n => { if(abierta(n)) conexiones[n].send({dev:'estado', rangos:[x]}); });   // los desconectados lo reciben al volver
   pintarDev();
 }
 function unirseGrupo(id){
@@ -876,7 +905,11 @@ function pintarDev(){
   ns.forEach(n => {
     const ban = banDe(reg.sanc, n);
     const f = fila(n + (ban ? ' (baneado ' + (ban.hasta ? 'hasta ' + hora(ban.hasta) : 'permanente') + ')' : '') + ' · ' + (abierta(n) ? 'en línea' : 'desconectado'), abierta(n) ? 'var(--neon)' : '');
-    f.append(btn(ban ? 'Desbanear' : 'Banear', () => sancionar(n, ban ? 'unban' : 'ban')), btn('Eliminar', () => sancionar(n, 'del'), 1), verBtn(n));
+    const sel = document.createElement('select'); sel.className = 'selRango';
+    [['', 'Sin rango'], ['pro', 'PRO'], ['manager', 'MANAGER']].forEach(([v, t]) => sel.append(new Option(t, v)));
+    sel.value = (reg.rangos[n] || {}).rango || '';
+    sel.onchange = () => ponerRango(n, sel.value);
+    f.append(sel, btn(ban ? 'Desbanear' : 'Banear', () => sancionar(n, ban ? 'unban' : 'ban')), btn('Eliminar', () => sancionar(n, 'del'), 1), verBtn(n));
     U.append(f);
   });
   if(!ns.length) U.insertAdjacentHTML('beforeend', '<div class="vacio" style="padding:8px 0">' + (devTab === 'baneados' ? 'No hay nadie baneado.' : 'Aún no ha entrado nadie.') + '</div>');
@@ -890,7 +923,7 @@ function pintarDev(){
 }
 
 /* ---------- Aviso de baneo, apodos y foto de perfil ---------- */
-let apodos = {}, fotos = {}, misStickers = [];
+let apodos = {}, fotos = {}, misStickers = [], rangos = {};
 const STICKERS = {s1:'😂', s2:'❤️', s3:'👍', s4:'🔥', s5:'🎉', s6:'😮', s7:'😭', s8:'😎', s9:'🤔', s10:'👏', s11:'🥳', s12:'💀'};
 function guardarStickers(){ try{ ALM.setItem('cpst_' + yo, JSON.stringify(misStickers)); }catch(e){ aviso('No hay espacio para guardar más stickers.'); } }
 const banDe = (m, u) => { const x = m[u]; return u !== DEV && x && x.cmd === 'ban' && (!x.hasta || Date.now() < x.hasta) ? x : null; };
